@@ -37,7 +37,10 @@ function CookieConsent(props) {
             }
         },
         cookieName: "cookie-consent-tracking-allowed",  // the name of the cookie, the cookie is `true` if tracking was accepted
-        modalId: "cookieConsentModal" // the id of the modal dialog element
+        modalId: "cookieConsentModal", // the id of the modal dialog element
+        crossDomainQueryParameterName: "_cc",
+        crossDomainDomains: [],
+        googleTagDataLayer: 'dataLayer'
     }
     for (var property in props) {
         // noinspection JSUnfilteredForInLoop
@@ -54,7 +57,7 @@ function CookieConsent(props) {
     var linkPrivacyPolicy = '<a href="' + this.props.privacyPolicyUrl + '">' + _t.privacyPolicy + '</a>'
     var modalClass = "cookie-consent-modal"
     if (this.props.blockAccess) {
-         modalClass += " block-access"
+        modalClass += " block-access"
     }
     this.modalContent = '<div class="' + modalClass + '">' +
         '<div class="modal-content-wrap ' + this.props.position + '">' +
@@ -73,6 +76,26 @@ function CookieConsent(props) {
         "<button class='btn-accept-all " + this.props.buttonPrimaryClass + "'>" + _t.buttonAcceptAll + "</button>" +
         "</div>"
     )
+
+    /**
+     *
+     */
+    this.addToDataLayer = function(obj) {
+        if (!this.props.googleTagDataLayer) {
+            return;
+        }
+
+        if (typeof(window[this.props.googleTagDataLayer]) === 'undefined') {
+            window[this.props.googleTagDataLayer] = [];
+        }
+
+        if (arguments.length > 1) {
+            window[this.props.googleTagDataLayer].push(arguments);
+        } else {
+            window[this.props.googleTagDataLayer].push(arguments[0]);
+        }
+
+    }
 
     function setCookie(name, value, days) {
         var expires = ""
@@ -120,18 +143,20 @@ function CookieConsent(props) {
             this.modal = document.getElementById(self.props.modalId)
             if (!this.modal) {
                 this.modal = document.createElement("div")
+                this.modal.style.position = 'absolute';
+                this.modal.style.zIndex = 1000;
                 this.modal.id = self.props.modalId
                 this.modal.innerHTML = self.modalContent
                 document.body.append(this.modal)
                 this.modal.querySelector(".btn-accept-necessary").addEventListener("click", function () {
-                    setCookie(self.props.cookieName, "false", 365)
+                    self.decline();
                     hideDialog()
                     if(self.props.postSelectionCallback) {
                         self.props.postSelectionCallback()
                     }
                 })
                 this.modal.querySelector(".btn-accept-all").addEventListener("click", function () {
-                    setCookie(self.props.cookieName, "true", 365)
+                    self.accept();
                     hideDialog()
                     if(self.props.postSelectionCallback) {
                         self.props.postSelectionCallback()
@@ -143,15 +168,161 @@ function CookieConsent(props) {
         }.bind(this))
     }
 
-    if (getCookie(this.props.cookieName) === undefined && this.props.autoShowModal) {
-        showDialog()
+    function getRefQueryParam(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
+
+    function isTargetWebsite(link) {
+        // is internal link?
+        if (!link.host || link.host === window.location.host) {
+            return false;
+        }
+
+        var href = link.href;
+        for (var i = 0; i < self.props.crossDomainDomains.length; i ++) {
+            if (("" + href).indexOf(self.props.crossDomainDomains[i]) > -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function listenForLinkClicks() {
+        // Listen for link clicks
+        var navLinks = document.querySelectorAll('a');
+        navLinks.forEach(function (item) {
+            if (item.dataset.ccFixed) {
+                return;
+            }
+            item.dataset.ccFixed = true;
+            item.addEventListener('click', function () {
+                var consentStatus = getCookie(self.props.cookieName);
+                if (!consentStatus) {
+                    return;
+                }
+
+                if (!isTargetWebsite(item)) {
+                    return false;
+                }
+
+                if (item.href.indexOf('?') === -1) {
+                    item.href += '?';
+                } else {
+                    item.href += '&';
+                }
+                item.href += self.props.crossDomainQueryParameterName + '=' + consentStatus;
+            });
+        });
+    }
+
+    var showDialogOnLoad = false;
+    if (getCookie(this.props.cookieName) === undefined && this.props.autoShowModal) {
+        showDialogOnLoad = true;
+    } else {
+        switch (getCookie(this.props.cookieName)) {
+            case 'true':
+                this.addToDataLayer('consent', 'default', {
+                    'ad_storage': 'granted',
+                    'analytics_storage': 'granted'
+                });
+                this.addToDataLayer({ "cookie_consent" : 2 });
+                break;
+
+            case 'false':
+                this.addToDataLayer('consent', 'default', {
+                    'ad_storage': 'denied',
+                    'analytics_storage': 'denied'
+                });
+                this.addToDataLayer({ "cookie_consent" : 0 });
+                break;
+        }
+        this.addToDataLayer({ event: "cookie_consent" });
+    }
+
+    // Wait one second for the cross domain feature to kick in.
+    documentReady(function() {
+
+        setTimeout(function() {
+            if (showDialogOnLoad) {
+                showDialog()
+            }
+        }, 1);
+    });
 
     // API
     this.reset = function () {
         removeCookie(this.props.cookieName)
         showDialog()
     }
+
+    this.accept = function() {
+        setCookie(self.props.cookieName, "true", 365);
+
+        this.addToDataLayer('consent', 'update', {
+            'ad_storage': 'granted',
+            'analytics_storage': 'granted'
+        });
+        this.addToDataLayer({ "cookie_consent" : 2 });
+        this.addToDataLayer({ event: "cookie_consent", value: 2 });
+    }
+
+    this.decline = function() {
+        setCookie(self.props.cookieName, "false", 365);
+
+        this.addToDataLayer('consent', 'update', {
+            'ad_storage': 'denied',
+            'analytics_storage': 'denied'
+        });
+        this.addToDataLayer({ "cookie_consent" : 0 });
+        this.addToDataLayer({ event: "cookie_consent", value: 0 });
+    };
+
+    this.enableCrossDomain = function(domains) {
+        if (!Array.isArray(domains)) {
+            domains = [ domains ];
+        }
+
+        this.props.crossDomainDomains = domains;
+
+        documentReady(function() {
+            // Look for query parameters
+            var crossDomainValue = getRefQueryParam(self.props.crossDomainQueryParameterName);
+            if (crossDomainValue) {
+                switch (crossDomainValue) {
+                    case 'true':
+                        showDialogOnLoad = false;
+                        this.accept();
+                        break;
+
+                    case 'false':
+                        showDialogOnLoad = false;
+                        this.decline();
+                        break;
+                }
+
+                // try to remove the parameter
+                try {
+                    let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                    var queryString = window.location.search;
+                    queryString = queryString.replace(self.props.crossDomainQueryParameterName + '=' + crossDomainValue, '');
+                    if (queryString) {
+                        newUrl += queryString;
+                    }
+                    window.history.pushState({path: newUrl}, '', newUrl);
+                } catch (e) {
+                    // do nothing.
+                }
+            }
+
+            // Listen for link clicks
+            setInterval(listenForLinkClicks, 1000);
+            listenForLinkClicks();
+
+        }.bind(this));
+    };
 
     this.trackingAllowed = function () {
         return getCookie(this.props.cookieName) === "true"
