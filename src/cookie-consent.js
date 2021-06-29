@@ -254,7 +254,7 @@ function CookieConsent(props) {
 
     // API
     this.reset = function () {
-        removeCookie(this.props.cookieName)
+        removeCookie(this.props.cookieName);
         showDialog()
     }
 
@@ -278,6 +278,7 @@ function CookieConsent(props) {
         });
         this.addToDataLayer({ "cookie_consent" : 0 });
         this.addToDataLayer({ event: "cookie_consent", value: 0 });
+        this.addToDataLayer({ event: "revoke_cookie_consent", value: 0 });
     };
 
     this.enableCrossDomain = function(domains) {
