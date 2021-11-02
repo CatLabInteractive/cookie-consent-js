@@ -9,7 +9,7 @@ function CookieConsent(props) {
     var self = this
     this.props = {
         buttonPrimaryClass: "btn btn-primary", // the "accept all" buttons class, only used for styling
-        buttonSecondaryClass: "btn btn-secondary", // the "accept necessary" buttons class, only used for styling
+        buttonSecondaryClass: "btn btn-primary", // the "accept necessary" buttons class, only used for styling
         privacyPolicyUrl: "privacy-policy.html",
         autoShowModal: true, // disable autoShowModal on the privacy policy page, to make that page readable
         lang: navigator.language, // the language, in which the modal is shown
