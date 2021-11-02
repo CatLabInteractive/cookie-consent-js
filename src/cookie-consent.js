@@ -221,6 +221,8 @@ function CookieConsent(props) {
     var showDialogOnLoad = false;
     if (getCookie(this.props.cookieName) === undefined && this.props.autoShowModal) {
         showDialogOnLoad = true;
+        this.addToDataLayer({ "cookie_consent" : -1 });
+        this.addToDataLayer({ event: "cookie_consent" });
     } else {
         switch (getCookie(this.props.cookieName)) {
             case 'true':
