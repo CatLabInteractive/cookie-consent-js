@@ -12,7 +12,7 @@ function CookieConsent(props) {
         buttonSecondaryClass: "btn btn-primary", // the "accept necessary" buttons class, only used for styling
         privacyPolicyUrl: "privacy-policy.html",
         autoShowModal: true, // disable autoShowModal on the privacy policy page, to make that page readable
-        lang: navigator.language, // the language, in which the modal is shown
+        lang: document.documentElement.lang, // the language, in which the modal is shown
         blockAccess: false, // set "true" to block the access to the website before choosing a cookie configuration
         position: "right", // position ("left" or "right"), if blockAccess is false
         postSelectionCallback: undefined, // callback, after the user has made his selection
@@ -34,6 +34,15 @@ function CookieConsent(props) {
                 privacyPolicy: "privacy policy",
                 buttonAcceptAll: "Accept all cookies",
                 buttonAcceptTechnical: "Only accept technically necessary cookies"
+            },
+            nl: {
+                title: "Cookie instellingen",
+                body: "We gebruiken cookies om de inhoud te personaliseren en de toegang tot onze website te analyseren. " +
+                    "U kunt kiezen of u alleen cookies accepteert die nodig zijn voor het functioneren van de website of " +
+                    "dat u ook tracking cookies wilt toestaan. Raadpleeg voor meer informatie ons --privacy-policy--.",
+                privacyPolicy: "privacybeleid",
+                buttonAcceptAll: "Accepteer alle cookies",
+                buttonAcceptTechnical: "Accepteer enkel technische cookies"
             }
         },
         cookieName: "cookie-consent-tracking-allowed",  // the name of the cookie, the cookie is `true` if tracking was accepted
@@ -54,6 +63,9 @@ function CookieConsent(props) {
         this.lang = "en" // fallback
     }
     var _t = this.props.content[this.lang]
+
+    this.props.privacyPolicyUrl = this.props.privacyPolicyUrl.replace('{language}', this.lang);
+
     var linkPrivacyPolicy = '<a href="' + this.props.privacyPolicyUrl + '">' + _t.privacyPolicy + '</a>'
     var modalClass = "cookie-consent-modal"
     if (this.props.blockAccess) {
