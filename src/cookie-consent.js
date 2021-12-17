@@ -49,7 +49,8 @@ function CookieConsent(props) {
         modalId: "cookieConsentModal", // the id of the modal dialog element
         crossDomainQueryParameterName: "_cc",
         crossDomainDomains: [],
-        googleTagDataLayer: 'dataLayer'
+        googleTagDataLayer: 'dataLayer',
+        domain: null
     }
     for (var property in props) {
         // noinspection JSUnfilteredForInLoop
@@ -109,14 +110,20 @@ function CookieConsent(props) {
 
     }
 
-    function setCookie(name, value, days) {
+    function setCookie(name, value, days, domain) {
         var expires = ""
         if (days) {
             var date = new Date()
             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000))
             expires = "; expires=" + date.toUTCString()
         }
-        document.cookie = name + "=" + (value || "") + expires + "; Path=/; SameSite=Strict;"
+
+        var cookieString = name + "=" + (value || "") + expires + "; Path=/; SameSite=Strict;";
+        if (domain) {
+            cookieString += 'Domain=' + domain + ';';
+        }
+
+        document.cookie = cookieString;
     }
 
     function getCookie(name) {
@@ -273,7 +280,7 @@ function CookieConsent(props) {
     }
 
     this.accept = function() {
-        setCookie(self.props.cookieName, "true", 365);
+        setCookie(self.props.cookieName, "true", 365, this.props.domain);
 
         this.addToDataLayer('consent', 'update', {
             'ad_storage': 'granted',
@@ -284,7 +291,7 @@ function CookieConsent(props) {
     }
 
     this.decline = function() {
-        setCookie(self.props.cookieName, "false", 365);
+        setCookie(self.props.cookieName, "false", 365, this.props.domain);
 
         this.addToDataLayer('consent', 'update', {
             'ad_storage': 'denied',
