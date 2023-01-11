@@ -333,7 +333,7 @@ function CookieConsent(props) {
                     if (queryString) {
                         newUrl += queryString;
                     }
-                    window.history.pushState({path: newUrl}, '', newUrl);
+                    window.history.replaceState({path: newUrl}, '', newUrl);
                 } catch (e) {
                     // do nothing.
                 }
