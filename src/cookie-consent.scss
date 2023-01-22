@@ -101,6 +101,18 @@ $secondary: #89a; // "accept necessary" button color
     }
   }
 
+  @media screen and (max-width: 991px) {
+    .modal-content-wrap {
+      margin: 0;
+
+      .modal-content {
+        max-width: 100%;
+        width: 100%;
+        border: 0 none black;
+      }
+    }
+  }
+
   @media screen and (max-width: 620px) {
     .btn {
       width: 100%;
