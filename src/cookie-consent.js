@@ -24,7 +24,7 @@ function CookieConsent(props) {
                     "Tracking-Cookies zulassen möchten. Weitere Informationen finden Sie in unserer --privacy-policy--.",
                 privacyPolicy: "Datenschutzerklärung",
                 buttonAcceptAll: "Alle Cookies akzeptieren",
-                buttonAcceptTechnical: "Nur technisch notwendige Cookies akzeptieren"
+                buttonAcceptTechnical: "Nur notwendige Cookies akzeptieren"
             },
             en: {
                 title: "Cookie settings",
@@ -33,7 +33,7 @@ function CookieConsent(props) {
                     "or whether you also want to allow tracking cookies. For more information, please refer to our --privacy-policy--.",
                 privacyPolicy: "privacy policy",
                 buttonAcceptAll: "Accept all cookies",
-                buttonAcceptTechnical: "Only accept technically necessary cookies"
+                buttonAcceptTechnical: "Only accept necessary cookies"
             },
             nl: {
                 title: "Cookie instellingen",
@@ -42,7 +42,7 @@ function CookieConsent(props) {
                     "dat u ook tracking cookies wilt toestaan. Raadpleeg voor meer informatie ons --privacy-policy--.",
                 privacyPolicy: "privacybeleid",
                 buttonAcceptAll: "Accepteer alle cookies",
-                buttonAcceptTechnical: "Accepteer enkel technische cookies"
+                buttonAcceptTechnical: "Accepteer enkel noodzakelijke cookies"
             }
         },
         cookieName: "cookie-consent-tracking-allowed",  // the name of the cookie, the cookie is `true` if tracking was accepted
