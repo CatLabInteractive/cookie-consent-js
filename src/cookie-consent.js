@@ -93,7 +93,7 @@ function CookieConsent(props) {
 
     // Do we have a list of crossDomains?
     if (typeof(props.crossDomains) !== 'undefined') {
-        cookieConsent.enableCrossDomain([
+        this.enableCrossDomain([
             'quizwitz.com',
             'catlab.eu',
             'quizfabriek.be',
