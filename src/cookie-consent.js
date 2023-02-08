@@ -90,6 +90,17 @@ function CookieConsent(props) {
         "</div>"
     );
 
+
+    // Do we have a list of crossDomains?
+    if (typeof(props.crossDomains) !== 'undefined') {
+        cookieConsent.enableCrossDomain([
+            'quizwitz.com',
+            'catlab.eu',
+            'quizfabriek.be',
+            'quizwitz-website-iajaf.ondigitalocean.app/',
+        ]);
+    }
+
     /**
      *
      */
@@ -365,4 +376,9 @@ function CookieConsent(props) {
         return getCookie(this.props.cookieName) === "true"
     }
 
+}
+
+// Do we have pre defined settings?
+if (typeof(window.COOKIE_CONSENT_SETTINGS) !== 'undefined') {
+    window.cookieConsent = new CookieConsent(window.COOKIE_CONSENT_SETTINGS);
 }
