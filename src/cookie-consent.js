@@ -90,17 +90,6 @@ function CookieConsent(props) {
         "</div>"
     );
 
-
-    // Do we have a list of crossDomains?
-    if (typeof(props.crossDomains) !== 'undefined') {
-        this.enableCrossDomain([
-            'quizwitz.com',
-            'catlab.eu',
-            'quizfabriek.be',
-            'quizwitz-website-iajaf.ondigitalocean.app/',
-        ]);
-    }
-
     /**
      *
      */
@@ -374,6 +363,16 @@ function CookieConsent(props) {
 
     this.trackingAllowed = function () {
         return getCookie(this.props.cookieName) === "true"
+    }
+
+    // Do we have a list of crossDomains?
+    if (typeof(props.crossDomains) !== 'undefined') {
+        this.enableCrossDomain([
+            'quizwitz.com',
+            'catlab.eu',
+            'quizfabriek.be',
+            'quizwitz-website-iajaf.ondigitalocean.app/',
+        ]);
     }
 
 }
