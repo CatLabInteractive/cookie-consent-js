@@ -19,30 +19,24 @@ function CookieConsent(props) {
         content: { // the content in all needed languages
             de: {
                 title: "Cookie-Einstellungen",
-                body: "Wir nutzen Cookies, um Inhalte zu personalisieren und die Zugriffe auf unsere Website zu analysieren. " +
-                    "Sie können wählen, ob Sie nur für die Funktion der Website notwendige Cookies akzeptieren oder auch " +
-                    "Tracking-Cookies zulassen möchten. Weitere Informationen finden Sie in unserer --privacy-policy--.",
+                body: "Wir nutzen Cookies, um Inhalte zu personalisieren und die Zugriffe auf unsere Website zu analysieren. Weitere Informationen finden Sie in unserer --privacy-policy--.",
                 privacyPolicy: "Datenschutzerklärung",
                 buttonAcceptAll: "Alle Cookies akzeptieren",
                 buttonAcceptTechnical: "Nur notwendige Cookies akzeptieren"
             },
             en: {
                 title: "Cookie settings",
-                body: "We use cookies to personalize content and analyze access to our website. " +
-                    "You can choose whether you only accept cookies that are necessary for the functioning of the website " +
-                    "or whether you also want to allow tracking cookies. For more information, please refer to our --privacy-policy--.",
+                body: "We use cookies to personalize content and analyze access to our website. Please refer to our --privacy-policy--.",
                 privacyPolicy: "privacy policy",
                 buttonAcceptAll: "Accept all cookies",
-                buttonAcceptTechnical: "Only accept necessary cookies"
+                buttonAcceptTechnical: "Accept necessary cookies"
             },
             nl: {
                 title: "Cookie instellingen",
-                body: "We gebruiken cookies om de inhoud te personaliseren en de toegang tot onze website te analyseren. " +
-                    "U kunt kiezen of u alleen cookies accepteert die nodig zijn voor het functioneren van de website of " +
-                    "dat u ook tracking cookies wilt toestaan. Raadpleeg voor meer informatie ons --privacy-policy--.",
+                body: "We gebruiken cookies om de inhoud te personaliseren en de toegang tot onze website te analyseren. Raadpleeg ons --privacy-policy--.",
                 privacyPolicy: "privacybeleid",
                 buttonAcceptAll: "Accepteer alle cookies",
-                buttonAcceptTechnical: "Accepteer enkel noodzakelijke cookies"
+                buttonAcceptTechnical: "Accepteer noodzakelijke cookies"
             }
         },
         cookieName: "cookie-consent-tracking-allowed",  // the name of the cookie, the cookie is `true` if tracking was accepted
