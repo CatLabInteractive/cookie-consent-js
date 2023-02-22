@@ -349,8 +349,14 @@ function CookieConsent(props) {
             }
 
             // Listen for link clicks
-            setInterval(listenForLinkClicks, 1000);
+            //setInterval(listenForLinkClicks, 1000);
             listenForLinkClicks();
+
+            // Append to global 'on document change' callstack
+            if (typeof(window._onDocumentChangeListeners) === 'undefined') {
+                window._onDocumentChangeListeners = [];
+            }
+            window._onDocumentChangeListeners.push(listenForLinkClicks);
 
         }.bind(this));
     };
