@@ -26,14 +26,14 @@ function CookieConsent(props) {
             },
             en: {
                 title: "Cookie settings",
-                body: "We use cookies to personalize content and analyze access to our website. Please refer to our --privacy-policy--.",
+                body: "We use cookies to personalize content and analyze access to our website. Please refer to our --privacy-policy-- for more information.",
                 privacyPolicy: "privacy policy",
                 buttonAcceptAll: "Accept all cookies",
                 buttonAcceptTechnical: "Accept necessary cookies"
             },
             nl: {
                 title: "Cookie instellingen",
-                body: "We gebruiken cookies om de inhoud te personaliseren en de toegang tot onze website te analyseren. Raadpleeg ons --privacy-policy--.",
+                body: "We gebruiken cookies om de inhoud te personaliseren en de toegang tot onze website te analyseren. Raadpleeg ons --privacy-policy-- voor meer informatie.",
                 privacyPolicy: "privacybeleid",
                 buttonAcceptAll: "Accepteer alle cookies",
                 buttonAcceptTechnical: "Accepteer noodzakelijke cookies"
@@ -70,8 +70,8 @@ function CookieConsent(props) {
         '<div class="modal-content-wrap ' + this.props.position + '">' +
         '<div class="modal-content">' +
         //'<div class="modal-header">--header--</div>' +
-        '<div class="modal-body">--body--</div>' +
-        '<div class="modal-footer">--footer--</div>' +
+        '<div class="modal-body">--body-- <br /> --footer--</div>' +
+        //'<div class="modal-footer">--footer--</div>' +
         '</div></div>'
     this.modalContent = this.modalContent.replace(/--header--/, "<h3 class=\"modal-title\">" + _t.title + "</h3>")
     this.modalContent = this.modalContent.replace(/--body--/,
