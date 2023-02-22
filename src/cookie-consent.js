@@ -69,7 +69,7 @@ function CookieConsent(props) {
     this.modalContent = '<div class="' + modalClass + '">' +
         '<div class="modal-content-wrap ' + this.props.position + '">' +
         '<div class="modal-content">' +
-        '<div class="modal-header">--header--</div>' +
+        //'<div class="modal-header">--header--</div>' +
         '<div class="modal-body">--body--</div>' +
         '<div class="modal-footer">--footer--</div>' +
         '</div></div>'
